@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .input-row {
+        margin-bottom: 10px;
+      }
+      label {
+        display: inline-block;
+        width: 100px;
+      }
+      input[type="text"],
+      input[type="number"] {
+        width: 150px;
+        padding: 5px;
+        margin-right: 10px;
+      }
+      button {
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+      }
+      th {
+        background-color: #f4f4f4;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Shopping Cart</h1>
+    <div class="input-row">
+      <label for="itemName">Item Name:</label>
+      <input type="text" id="itemName" />
+    </div>
+    <div class="input-row">
+      <label for="itemPrice">Price:</label>
+      <input type="number" id="itemPrice" />
+    </div>
+    <div class="input-row">
+      <label for="itemQuantity">Quantity:</label>
+      <input type="number" id="itemQuantity" />
+    </div>
+    <div class="input-row">
+      <label for="itemAmount">Amount:</label>
+      <input type="number" id="itemAmount" readonly />
+    </div>
+    <button onclick="addItem()">Add to Cart</button>
+
+    <div class="cart">
+      <h2>Cart</h2>
+      <table id="cartTable">
+        <thead>
+          <tr>
+            <th>Item Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="cartBody"></tbody>
+      </table>
+    </div>
+
+    <script>
+      function addItem() {
+        const itemName = document.getElementById("itemName").value;
+        const itemPrice = parseFloat(
+          document.getElementById("itemPrice").value
+        );
+        const itemQuantity = parseInt(
+          document.getElementById("itemQuantity").value
+        );
+
+        if (
+          !itemName ||
+          isNaN(itemPrice) ||
+          isNaN(itemQuantity) ||
+          itemQuantity <= 0 ||
+          itemPrice <= 0
+        ) {
+          alert("Please enter valid item details.");
+          return;
+        }
+
+        const itemAmount = itemPrice * itemQuantity;
+        document.getElementById("itemAmount").value = itemAmount.toFixed(2);
+
+        const cartBody = document.getElementById("cartBody");
+        const row = cartBody.insertRow();
+        row.insertCell(0).innerText = itemName;
+        row.insertCell(1).innerText = itemPrice.toFixed(2);
+        row.insertCell(2).innerText = itemQuantity;
+        row.insertCell(3).innerText = itemAmount.toFixed(2);
+
+        // Create delete button
+        const deleteCell = row.insertCell(4);
+        const deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.onclick = function () {
+          cartBody.deleteRow(row.rowIndex - 1);
+        };
+        deleteCell.appendChild(deleteButton);
+
+        // Clear the input fields
+        document.getElementById("itemName").value = "";
+        document.getElementById("itemPrice").value = "";
+        document.getElementById("itemQuantity").value = "";
+        document.getElementById("itemAmount").value = "";
+      }
+    </script>
+  </body>
+</html>

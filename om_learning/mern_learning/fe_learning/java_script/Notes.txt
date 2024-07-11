@@ -1,0 +1,1 @@
+Let Is Function Scoped Variable. Var is a Globally Scoped Variable . Const is same like var but only difference is const value cannot be updated once assigned.
